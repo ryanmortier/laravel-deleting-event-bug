@@ -36,6 +36,24 @@ class User extends Authenticatable
     ];
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (User $user) {
+            $user->status = 'new';
+        });
+
+        static::deleting(function (User $user) {
+            $user->status = 'deleted';
+        });
+
+        static::restoring(function (User $user) {
+            $user->status = 'restored';
+        });
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
